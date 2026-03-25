@@ -6,6 +6,7 @@ import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import dev.srsouza.kmp.songlyst.di.AppGraphHolder
 
 @Composable
@@ -21,6 +22,10 @@ public fun SonglystNavHost(modifier: Modifier = Modifier) {
         backStack = navigationStack.backStack,
         onBack = { navigationStack.popBackStack() },
         modifier = modifier,
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberRetainNavEntryDecorator(),
+        ),
         entryProvider = { key ->
             val factory =
                 factoriesByRoute[key::class]
