@@ -5,6 +5,7 @@ import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
 import dev.srsouza.kmp.songlyst.navigation.Navigator
 import dev.srsouza.kmp.songlyst.navigation.Route
+import dev.srsouza.kmp.songlyst.navigation.ScreenFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
@@ -45,6 +46,21 @@ internal class FakeNavigator(
                     return block(route as R)
                 }
             }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun registerScreenFactories(factories: Set<ScreenFactory<*, *>>) {
+        for (factory in factories) {
+            val typedFactory = factory as ScreenFactory<Route, Any>
+            handlers[factory.route] =
+                object : RouteHandler {
+                    @Composable
+                    override fun present(route: Route): Any {
+                        val presenter = typedFactory.createPresenter(route)
+                        return presenter.present()
+                    }
+                }
+        }
     }
 
     fun start(route: Route) {

@@ -20,15 +20,6 @@ import kotlin.test.Test
 class NavigationIntegrationTest {
     private fun createTestGraph(navigator: FakeNavigator): TestAppGraph = createGraphFactory<TestAppGraph.Factory>().create(navigator)
 
-    private fun FakeNavigator.registerRoutes(graph: TestAppGraph) {
-        onRoute<AlbumListRoute> { _ ->
-            graph.createAlbumListPresenter().present()
-        }
-        onRoute<AlbumDetailRoute> { route ->
-            graph.albumDetailPresenterFactory.create(route.albumId).present()
-        }
-    }
-
     @Test
     fun navigateFromAlbumListToAlbumDetailAndBack() =
         runTest {
@@ -36,7 +27,7 @@ class NavigationIntegrationTest {
             val graph = createTestGraph(navigator)
             val fakeRepo = graph.repository as FakeITunesRepository
 
-            navigator.registerRoutes(graph)
+            navigator.registerScreenFactories(graph.screenFactories)
 
             fakeRepo.emitAlbums(listOf(FakeAlbumData.album1, FakeAlbumData.album2))
             navigator.start(AlbumListRoute)
@@ -77,7 +68,7 @@ class NavigationIntegrationTest {
             val graph = createTestGraph(navigator)
             val fakeRepo = graph.repository as FakeITunesRepository
 
-            navigator.registerRoutes(graph)
+            navigator.registerScreenFactories(graph.screenFactories)
 
             fakeRepo.emitError(NetworkError.NoConnection())
             navigator.start(AlbumListRoute)
@@ -108,7 +99,7 @@ class NavigationIntegrationTest {
             val graph = createTestGraph(navigator)
             val fakeRepo = graph.repository as FakeITunesRepository
 
-            navigator.registerRoutes(graph)
+            navigator.registerScreenFactories(graph.screenFactories)
 
             fakeRepo.emitError(NetworkError.NoConnection())
             navigator.start(AlbumListRoute)
@@ -143,7 +134,7 @@ class NavigationIntegrationTest {
             val graph = createTestGraph(navigator)
             val fakeRepo = graph.repository as FakeITunesRepository
 
-            navigator.registerRoutes(graph)
+            navigator.registerScreenFactories(graph.screenFactories)
 
             fakeRepo.emitAlbums(listOf(FakeAlbumData.album1, FakeAlbumData.album2))
             navigator.start(AlbumListRoute)

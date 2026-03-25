@@ -7,7 +7,7 @@ import dev.zacsweers.metro.createGraph
 
 @DependencyGraph(AppScope::class)
 public interface AppGraph {
-    public val screenFactories: Set<ScreenFactory<*>>
+    public val screenFactories: Set<ScreenFactory<*, *>>
     public val navigationStack: NavigationStack
 }
 

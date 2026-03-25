@@ -36,10 +36,13 @@ public fun SonglystNavHost(modifier: Modifier = Modifier) {
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun <T : Route> navEntry(
-    factory: ScreenFactory<T>,
+private fun navEntry(
+    factory: ScreenFactory<*, *>,
     key: Route,
 ): NavEntry<Route> =
     NavEntry(key) {
-        factory.Content(key as T)
+        val typedFactory = factory as ScreenFactory<Route, Any>
+        val presenter = retain { typedFactory.createPresenter(key) }
+        val state = presenter.present()
+        typedFactory.Content(state)
     }

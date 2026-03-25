@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.navigation3.runtime)
+            api(projects.core.presenter)
             implementation(libs.compose.runtime.retain)
         }
     }
