@@ -1,6 +1,6 @@
 [versions]
 # Kotlin & Compose
-kotlin = "2.3.20-Beta1"
+kotlin = "2.3.20"
 compose-multiplatform = "1.10.0"
 ksp = "2.3.5"
 
@@ -27,7 +27,7 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
 
 # DI
-metro = "0.10.2"
+metro = "0.12.0"
 
 # Image Loading
 coil = "3.3.0"
