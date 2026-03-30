@@ -44,7 +44,9 @@ internal fun AlbumListScreen(
                     .background(LemonadeTheme.colors.background.bgDefault)
                     .padding(paddingValues),
         ) {
-            AlbumListToolbar()
+            AlbumListToolbar(
+                onPlaygroundClick = { state.eventSink(AlbumListEvent.OnPlaygroundClicked) },
+            )
 
             Column(
                 modifier =
@@ -82,7 +84,10 @@ internal fun AlbumListScreen(
 
 @OptIn(ExperimentalLemonadeComponent::class)
 @Composable
-private fun AlbumListToolbar(modifier: Modifier = Modifier) {
+private fun AlbumListToolbar(
+    onPlaygroundClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier =
             modifier
@@ -101,8 +106,8 @@ private fun AlbumListToolbar(modifier: Modifier = Modifier) {
 
         LemonadeUi.IconButton(
             icon = LemonadeIcons.Trophy,
-            contentDescription = "Top Charts",
-            onClick = { },
+            contentDescription = "Playground",
+            onClick = onPlaygroundClick,
             variant = LemonadeIconButtonVariant.Subtle,
             size = LemonadeIconButtonSize.Medium,
         )

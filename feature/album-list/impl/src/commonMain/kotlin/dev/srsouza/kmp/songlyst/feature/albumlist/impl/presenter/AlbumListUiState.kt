@@ -22,6 +22,7 @@ public data class AlbumListUiState(
 
 public sealed interface AlbumListEvent {
     public data object OnRetryClicked : AlbumListEvent
+    public data object OnPlaygroundClicked : AlbumListEvent
 }
 
 public sealed interface ContentEvent {

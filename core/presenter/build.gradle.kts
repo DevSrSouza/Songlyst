@@ -9,7 +9,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.compose.runtime.retain)
+            implementation(libs.molecule.runtime)
         }
     }
 }

@@ -17,8 +17,7 @@ internal class FakeNavigator(
     private val parentScope: CoroutineScope,
 ) : Navigator {
     interface RouteHandler {
-        @Composable
-        fun present(route: Route): Any
+        fun createStateFlow(route: Route, scope: CoroutineScope): StateFlow<*>
     }
 
     class BackStackEntry(
@@ -40,10 +39,11 @@ internal class FakeNavigator(
     inline fun <reified R : Route> onRoute(noinline block: @Composable (route: R) -> Any) {
         handlers[R::class] =
             object : RouteHandler {
-                @Composable
-                override fun present(route: Route): Any {
+                override fun createStateFlow(route: Route, scope: CoroutineScope): StateFlow<*> {
                     @Suppress("UNCHECKED_CAST")
-                    return block(route as R)
+                    return scope.launchMolecule(RecompositionMode.Immediate) {
+                        block(route as R)
+                    }
                 }
             }
     }
@@ -54,10 +54,9 @@ internal class FakeNavigator(
             val typedFactory = factory as ScreenFactory<Route, Any>
             handlers[factory.route] =
                 object : RouteHandler {
-                    @Composable
-                    override fun present(route: Route): Any {
+                    override fun createStateFlow(route: Route, scope: CoroutineScope): StateFlow<*> {
                         val presenter = typedFactory.createPresenter(route)
-                        return presenter.present()
+                        return presenter.testIn(scope)
                     }
                 }
         }
@@ -85,11 +84,7 @@ internal class FakeNavigator(
                 parentScope.coroutineContext + Job(parentScope.coroutineContext[Job]),
             )
 
-        val stateFlow =
-            entryScope.launchMolecule(RecompositionMode.Immediate) {
-                handler.present(route)
-            }
-
+        val stateFlow = handler.createStateFlow(route, entryScope)
         mutableBackStack.add(BackStackEntry(route, stateFlow, entryScope))
     }
 

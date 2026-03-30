@@ -47,5 +47,7 @@ include(":feature:album-list:api")
 include(":feature:album-list:impl")
 include(":feature:album-detail:api")
 include(":feature:album-detail:impl")
+include(":feature:playground:api")
+include(":feature:playground:impl")
 
 include(":integration-test")

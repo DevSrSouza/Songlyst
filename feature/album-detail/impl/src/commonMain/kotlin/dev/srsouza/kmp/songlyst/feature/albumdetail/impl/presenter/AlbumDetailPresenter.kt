@@ -2,11 +2,11 @@ package dev.srsouza.kmp.songlyst.feature.albumdetail.impl.presenter
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import dev.srsouza.kmp.songlyst.itunes.api.ITunesRepository
 import dev.srsouza.kmp.songlyst.itunes.api.model.Album
 import dev.srsouza.kmp.songlyst.navigation.Navigator
 import dev.srsouza.kmp.songlyst.presenter.Presenter
-import dev.srsouza.kmp.songlyst.presenter.produceRetainedState
 import dev.zacsweers.metro.Assisted
 import dev.zacsweers.metro.AssistedFactory
 import dev.zacsweers.metro.AssistedInject
@@ -17,10 +17,10 @@ public class AlbumDetailPresenter
         @Assisted private val albumId: String,
         private val navigator: Navigator,
         private val repository: ITunesRepository,
-    ) : Presenter<AlbumDetailUiState> {
+    ) : Presenter<AlbumDetailUiState>() {
         @Composable
-        public override fun present(): AlbumDetailUiState {
-            val albumResult by produceRetainedState<Result<Album>?>(initialValue = null) {
+        override fun present(): AlbumDetailUiState {
+            val albumResult by produceState<Result<Album>?>(initialValue = null) {
                 value = repository.getAlbumById(albumId)
             }
 

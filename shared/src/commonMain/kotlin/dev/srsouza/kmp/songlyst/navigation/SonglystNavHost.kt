@@ -1,6 +1,8 @@
 package dev.srsouza.kmp.songlyst.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Modifier
@@ -43,6 +45,6 @@ private fun navEntry(
     NavEntry(key) {
         val typedFactory = factory as ScreenFactory<Route, Any>
         val presenter = retain { typedFactory.createPresenter(key) }
-        val state = presenter.present()
+        val state by presenter.viewState.collectAsState()
         typedFactory.Content(state)
     }

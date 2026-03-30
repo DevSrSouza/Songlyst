@@ -11,6 +11,7 @@ kotlin {
         commonMain.dependencies {
             api(projects.feature.albumList.api)
             implementation(projects.feature.albumDetail.api)
+            implementation(projects.feature.playground.api)
             implementation(projects.foundation.itunes.api)
             implementation(projects.core.navigation)
             implementation(projects.core.errorHandling)

@@ -33,6 +33,8 @@ kotlin {
             implementation(projects.feature.albumList.impl)
             implementation(projects.feature.albumDetail.api)
             implementation(projects.feature.albumDetail.impl)
+            implementation(projects.feature.playground.api)
+            implementation(projects.feature.playground.impl)
 
             implementation(libs.navigation3.ui)
             implementation(libs.coil.compose)

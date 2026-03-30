@@ -1,14 +1,15 @@
 package dev.srsouza.kmp.songlyst.feature.albumlist.impl.presenter
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import dev.srsouza.kmp.songlyst.errorhandling.NetworkError
 import dev.srsouza.kmp.songlyst.feature.albumdetail.api.AlbumDetailRoute
+import dev.srsouza.kmp.songlyst.feature.playground.api.PlaygroundRoute
 import dev.srsouza.kmp.songlyst.itunes.api.ITunesRepository
 import dev.srsouza.kmp.songlyst.navigation.Navigator
 import dev.srsouza.kmp.songlyst.presenter.Presenter
-import dev.srsouza.kmp.songlyst.presenter.collectAsRetainedState
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 
@@ -17,15 +18,16 @@ public class AlbumListPresenter
     constructor(
         private val navigator: Navigator,
         private val repository: ITunesRepository,
-    ) : Presenter<AlbumListUiState> {
+    ) : Presenter<AlbumListUiState>() {
         @Composable
-        public override fun present(): AlbumListUiState {
-            val albumsResult by repository.getAlbums().collectAsRetainedState(initial = null)
+        override fun present(): AlbumListUiState {
+            val albumsResult by repository.getAlbums().collectAsState(initial = null)
             val scope = rememberCoroutineScope()
 
             val eventSink: (AlbumListEvent) -> Unit = { event ->
                 when (event) {
                     AlbumListEvent.OnRetryClicked -> scope.launch { repository.refresh() }
+                    AlbumListEvent.OnPlaygroundClicked -> navigator.navigate(PlaygroundRoute)
                 }
             }
 
